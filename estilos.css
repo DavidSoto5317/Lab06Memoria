@@ -1,0 +1,89 @@
+.atras{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 130px;
+    background-image: url(./atras.png);
+}
+.card{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: all 0.5s ease;
+}
+
+.card:focus{
+    transform: rotateY(180deg);
+}
+
+
+.imagen1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 130px;
+    background-image: url(./imagen1.jpg);
+}
+
+.imagen2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 130px;
+    background-image: url(./imagen2.jpg);
+}
+.imagen3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 130px;
+    background-image: url(./imagen3.jpg);
+}
+.imagen4{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 130px;
+    background-image: url(./imagen4.jpg);
+}
+.imagen5{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 130px;
+    background-image: url(./imagen5.jpg);
+}
+.imagen6{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 130px;
+    background-image: url(./imagen6.jpg);
+}
+.imagen7{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 130px;
+    background-image: url(./imagen7.jpg);
+}
+.imagen8{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 130px;
+    background-image: url(./imagen8.jpg);
+}
+.bodyBackground{
+    background-image: url(./logo.jpg);
+}
