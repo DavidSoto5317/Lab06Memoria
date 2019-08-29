@@ -11,49 +11,17 @@
     <div id="root"></div>
     
     <script type="text/babel">
-      var elegidas = []
-      var correctas = []
-      var validacion
-      var contador = 0
 
       class Carta extends React.Component{
         constructor (props){
           super(props)
           this.state = {
-            imagenFondo: "atras"
+            voltear: false
           }
         }
         
         handleClick() {
-          if(elegidas.length < 2 && this.props.idPosicion != validacion){
-            console.log("Entre")
-            validacion = this.props.idPosicion
-            this.setState({
-              imagenFondo: this.props.imagen
-            })
-
-            elegidas.push(this.props.id)
-            //console.log("Espero")
-            if(elegidas.length != 2){
-
-            }
-            else{
-              if(elegidas[0] == elegidas[1] && elegidas[0] != null && elegidas[1] != null){
-                correctas.push(this.props.id)
-                elegidas.pop()
-                elegidas.pop()
-                if (correctas.length == 8){
-                  alert("Felicidades - Has Ganado")
-                }
-              }
-              setTimeout(() => {
-                if(!correctas.includes(this.props.id)){
-                this.setState({
-                imagenFondo: "atras"
-                })
-              }},1000)
-            }
-          }
+          this.props.handle(this.props.id, this.props.idPosicion)
         }
 
         render(){
@@ -64,18 +32,128 @@
             backgroundColor: "black"
 
           }
-
-          //Se verifica que todos tengan ID 
-          //console.log(this.props.id)
+          //console.log(this.props.volteo)
+          if(this.props.volteo){
+            var cara = this.props.imagen
+          }
+          else{
+            var cara = "atras"
+          }
 
           return (
               <div style={estilo} onClick={this.handleClick.bind(this)}>
-                <div className={this.state.imagenFondo}></div>
+                <div className={cara}></div>
               </div>
           )                   
         }
       }
       class Game extends React.Component {
+        constructor(props) {
+          super(props)
+
+          this.state = {
+            arregloAleatorio: [],
+            arregloFijo: [],
+            arregloImagenes: [],
+            elegidas: [],
+            posicionesElegidas: [],
+            correctas: [],
+            volteamiento: [],
+            validacion: null,
+            contador: 0
+          }
+          this.mezclar()
+        }
+
+        mezclar(){
+          //Creamos un arreglo fijo a mezclar
+          this.state.arregloFijo = [0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7]
+          this.state.arregloImagenes = ["imagen1","imagen2","imagen3","imagen4","imagen5","imagen6","imagen7","imagen8"]
+          //Creamos un arreglo para meter la mezcla del anterior
+          let arregloAlea = []
+          let arregloVolteo = []
+          //Se hace un ciclo while para ir pasando los numeros del arreglo fijo al mezclado
+          while(this.state.arregloFijo.length>0){
+            var arreglo = this.state.arregloFijo.splice(Math.floor(Math.random() * this.state.arregloFijo.length), 1)
+            arreglo = arreglo[0]
+            arregloAlea.push(arreglo)
+          }
+          this.state.arregloAleatorio = [...arregloAlea]
+          for(let i = 0; i<16; i++){
+            arregloVolteo.push(false)
+          }
+          this.state.volteamiento = [...arregloVolteo]
+
+        }
+
+        handleCardClick(id, posicion){
+          if(this.state.elegidas.length < 2 && posicion != this.state.validacion && !this.state.correctas.includes(id)){
+            var v = this.state.volteamiento
+            var posicionesEle = this.state.posicionesElegidas
+
+            v[posicion] = true
+            
+            this.setState({
+              volteamiento: v,
+              validacion: posicion
+            })
+
+            var choosed = this.state.elegidas
+            choosed.push(id)
+            posicionesEle.push(posicion)
+
+            this.setState({
+              elegidas: choosed,
+              posicionesElegidas: posicionesEle
+            })            
+            //console.log("Espero")
+            if(choosed.length != 2){
+
+            }
+            else{
+              if(choosed[0] == choosed[1] && choosed[0] != null && choosed[1] != null){
+                var good = this.state.correctas
+                good.push(id)
+                this.setState({
+                  correctas: good
+                })
+                //console.log(this.state.correctas)
+                this.setState({
+                    elegidas: [],
+                    posicionesElegidas: []
+                })              
+                //elegidas.pop()
+                //elegidas.pop()
+                setTimeout(() => {
+                  if (good.length == 8){
+                  alert("Felicidades - Has Ganado")
+                  }else{
+
+                  }
+                },100)
+              }else{
+                setTimeout(() => {
+                  v = this.state.volteamiento
+
+                  v[this.state.posicionesElegidas[0]] = false
+                  v[this.state.posicionesElegidas[1]] = false
+                  this.setState({
+                    volteamiento: v,
+                    elegidas: [],
+                    posicionesElegidas: []
+                  })
+                  //console.log(this.state.elegidas)
+                  //console.log(this.state.correctas)
+                  //console.log(this.state.elegidas)
+                  //console.log(this.state.volteamiento)
+                },500)  
+              }
+            }
+          }else{
+            console.log('Presiono 2 veces la misma')
+          }
+        }
+
         //Aqui se hace el grid del juego
         render(){
           const grid = {
@@ -92,44 +170,32 @@
             justifyContent: "center"
           }
 
-          //Creamos un arreglo fijo a mezclar
-          const arregloFijo = [0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7]
-          const arregloImagenes = ["imagen1","imagen2","imagen3","imagen4","imagen5","imagen6","imagen7","imagen8"]
-          //Creamos un arreglo para meter la mezcla del anterior
-          const arregloAleatorio = []
-
-          //Se hace un ciclo while para ir pasando los numeros del arreglo fijo al mezclado
-          while(arregloFijo.length>0){
-            var arreglo = arregloFijo.splice(Math.floor(Math.random() * arregloFijo.length), 1)
-            arreglo = arreglo[0]
-            arregloAleatorio.push(arreglo)
-          }
-
           //Se verifica que todos los numeros hayan sido sacados del arreglo fijo, y que se pasen revueltos los numeros al mezclado
-          console.log(arregloAleatorio)
-          console.log(arregloFijo)
+          //console.log(this.state.arregloAleatorio)
+          
+          //console.log(this.arregloFijo)
 
           //Se muestra en pantalla el HTML de las cartas
           return (
             <div>
           	<div style={flex}>
 	            <div style={grid}>
-	              <Carta id = {arregloAleatorio[0]}  imagen = {arregloImagenes[arregloAleatorio[0]]} idPosicion = '0' />
-	              <Carta id = {arregloAleatorio[1]}  imagen = {arregloImagenes[arregloAleatorio[1]]} idPosicion = '1' />
-	              <Carta id = {arregloAleatorio[2]}  imagen = {arregloImagenes[arregloAleatorio[2]]} idPosicion = '2' />
-	              <Carta id = {arregloAleatorio[3]}  imagen = {arregloImagenes[arregloAleatorio[3]]} idPosicion = '3' />
-	              <Carta id = {arregloAleatorio[4]}  imagen = {arregloImagenes[arregloAleatorio[4]]} idPosicion = '4' />
-	              <Carta id = {arregloAleatorio[5]}  imagen = {arregloImagenes[arregloAleatorio[5]]} idPosicion = '5' />
-	              <Carta id = {arregloAleatorio[6]}  imagen = {arregloImagenes[arregloAleatorio[6]]} idPosicion = '6' />
-	              <Carta id = {arregloAleatorio[7]}  imagen = {arregloImagenes[arregloAleatorio[7]]} idPosicion = '7' />
-	              <Carta id = {arregloAleatorio[8]}  imagen = {arregloImagenes[arregloAleatorio[8]]} idPosicion = '8' />
-	              <Carta id = {arregloAleatorio[9]}  imagen = {arregloImagenes[arregloAleatorio[9]]} idPosicion = '9' />
-	              <Carta id = {arregloAleatorio[10]}  imagen = {arregloImagenes[arregloAleatorio[10]]} idPosicion = '10' />
-	              <Carta id = {arregloAleatorio[11]}  imagen = {arregloImagenes[arregloAleatorio[11]]} idPosicion = '11' />
-	              <Carta id = {arregloAleatorio[12]}  imagen = {arregloImagenes[arregloAleatorio[12]]} idPosicion = '12' />
-	              <Carta id = {arregloAleatorio[13]}  imagen = {arregloImagenes[arregloAleatorio[13]]} idPosicion = '13' />
-	              <Carta id = {arregloAleatorio[14]}  imagen = {arregloImagenes[arregloAleatorio[14]]} idPosicion = '14' />
-	              <Carta id = {arregloAleatorio[15]}  imagen = {arregloImagenes[arregloAleatorio[15]]} idPosicion = '15' />
+	              <Carta id = {this.state.arregloAleatorio[0]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[0]]} idPosicion = '0' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[0]} />
+	              <Carta id = {this.state.arregloAleatorio[1]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[1]]} idPosicion = '1' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[1]} />
+	              <Carta id = {this.state.arregloAleatorio[2]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[2]]} idPosicion = '2' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[2]} />
+	              <Carta id = {this.state.arregloAleatorio[3]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[3]]} idPosicion = '3' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[3]} />
+	              <Carta id = {this.state.arregloAleatorio[4]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[4]]} idPosicion = '4' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[4]} />
+	              <Carta id = {this.state.arregloAleatorio[5]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[5]]} idPosicion = '5' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[5]} />
+	              <Carta id = {this.state.arregloAleatorio[6]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[6]]} idPosicion = '6' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[6]} />
+	              <Carta id = {this.state.arregloAleatorio[7]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[7]]} idPosicion = '7' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[7]} />
+	              <Carta id = {this.state.arregloAleatorio[8]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[8]]} idPosicion = '8' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[8]} />
+	              <Carta id = {this.state.arregloAleatorio[9]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[9]]} idPosicion = '9' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[9]} />
+	              <Carta id = {this.state.arregloAleatorio[10]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[10]]} idPosicion = '10' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[10]} />
+	              <Carta id = {this.state.arregloAleatorio[11]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[11]]} idPosicion = '11' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[11]} />
+	              <Carta id = {this.state.arregloAleatorio[12]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[12]]} idPosicion = '12' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[12]} />
+	              <Carta id = {this.state.arregloAleatorio[13]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[13]]} idPosicion = '13' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[13]} />
+	              <Carta id = {this.state.arregloAleatorio[14]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[14]]} idPosicion = '14' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[14]} />
+	              <Carta id = {this.state.arregloAleatorio[15]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[15]]} idPosicion = '15' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[15]} />
 	            </div>
        	  	</div>
             <div style={flex}>
