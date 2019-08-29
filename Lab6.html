@@ -27,6 +27,7 @@
             height: "100px",
             color: "orange",
             fontFamily: "arial",
+            textShadow: "2px 2px 2px #000000",
             fontSize: "50px"
           }
 
@@ -202,14 +203,24 @@
             gridTemplateRows: "150px 150px 150px 150px",  
             gridColumnGap: "10px",
             gridRowGap: "10px",
-
-
           }
+
           const flex = {
             display: "flex",
             justifyContent: "center"
           }
 
+          const letras = {
+            display: "flex",
+            justifyContent: "center",            
+            width: "700px",
+            height: "20px",
+            fontWeight: "bold",
+            textShadow: "2px 2px 2px #000000",
+            color: "orange",
+            fontFamily: "arial",
+            fontSize: "25px"
+          }         
           //Se verifica que todos los numeros hayan sido sacados del arreglo fijo, y que se pasen revueltos los numeros al mezclado
           //console.log(this.state.arregloAleatorio)
           
@@ -218,6 +229,12 @@
           //Se muestra en pantalla el HTML de las cartas
           return (
             <div>
+              <div style={flex}>
+                  <div style={letras}>People That Change the World - Memory Game</div>
+              </div>
+              <div style={flex}>
+                  <div style={letras}></div>
+              </div>
               <div style={flex}>
                 <div style={grid}>
                   <Carta id = {this.state.arregloAleatorio[0]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[0]]} idPosicion = '0' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[0]} />
@@ -237,6 +254,9 @@
                   <Carta id = {this.state.arregloAleatorio[14]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[14]]} idPosicion = '14' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[14]} />
                   <Carta id = {this.state.arregloAleatorio[15]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[15]]} idPosicion = '15' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[15]} />
                 </div>
+              </div>
+              <div style={flex}>
+                <div style={letras}>Movimientos que has realizado</div>
               </div>
               <div style={flex}>
                 <Counter contador = {this.state.counter} />
