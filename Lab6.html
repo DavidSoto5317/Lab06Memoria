@@ -11,6 +11,32 @@
     <div id="root"></div>
     
     <script type="text/babel">
+      class Counter extends React.Component{
+        constructor (props){
+          super(props)
+          this.state = {
+          
+          }
+        }
+        render(){
+          const cuadro  = {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100px",
+            height: "100px",
+            color: "orange",
+            fontFamily: "arial",
+            fontSize: "50px"
+          }
+
+          return (
+            <div style={cuadro}>
+              {this.props.contador}
+            </div>
+          )                   
+        }
+      }
 
       class Carta extends React.Component{
         constructor (props){
@@ -34,15 +60,24 @@
           }
           //console.log(this.props.volteo)
           if(this.props.volteo){
-            var cara = this.props.imagen
+            var frente = "frente1"
+            var atras = "atras1"
+            var cara1 = this.props.imagen
           }
           else{
-            var cara = "atras"
+            var frente = "frente2"
+            var atras = "atras2"
+            var cara2 = "atras"
           }
 
           return (
               <div style={estilo} onClick={this.handleClick.bind(this)}>
-                <div className={cara}></div>
+                <div className ={frente}>
+                  <div className={this.props.imagen}></div>
+                </div>
+                <div className ={atras}>
+                  <div className="atras"></div>
+                </div>
               </div>
           )                   
         }
@@ -60,7 +95,7 @@
             correctas: [],
             volteamiento: [],
             validacion: null,
-            contador: 0
+            counter: 0
           }
           this.mezclar()
         }
@@ -111,6 +146,9 @@
 
             }
             else{
+              this.setState({
+                counter: this.state.counter + 1
+              })
               if(choosed[0] == choosed[1] && choosed[0] != null && choosed[1] != null){
                 var good = this.state.correctas
                 good.push(id)
@@ -120,13 +158,14 @@
                 //console.log(this.state.correctas)
                 this.setState({
                     elegidas: [],
-                    posicionesElegidas: []
+                    posicionesElegidas: [],
+                    validacion: null
                 })              
                 //elegidas.pop()
                 //elegidas.pop()
                 setTimeout(() => {
                   if (good.length == 8){
-                  alert("Felicidades - Has Ganado")
+                  alert("Felicidades Juego Completado - Has Ganado")
                   }else{
 
                   }
@@ -140,17 +179,18 @@
                   this.setState({
                     volteamiento: v,
                     elegidas: [],
-                    posicionesElegidas: []
+                    posicionesElegidas: [],
+                    validacion: null
                   })
                   //console.log(this.state.elegidas)
                   //console.log(this.state.correctas)
                   //console.log(this.state.elegidas)
                   //console.log(this.state.volteamiento)
-                },500)  
+                },800)  
               }
             }
           }else{
-            console.log('Presiono 2 veces la misma')
+            //console.log('Presiono 2 veces la misma')
           }
         }
 
@@ -178,29 +218,29 @@
           //Se muestra en pantalla el HTML de las cartas
           return (
             <div>
-          	<div style={flex}>
-	            <div style={grid}>
-	              <Carta id = {this.state.arregloAleatorio[0]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[0]]} idPosicion = '0' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[0]} />
-	              <Carta id = {this.state.arregloAleatorio[1]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[1]]} idPosicion = '1' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[1]} />
-	              <Carta id = {this.state.arregloAleatorio[2]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[2]]} idPosicion = '2' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[2]} />
-	              <Carta id = {this.state.arregloAleatorio[3]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[3]]} idPosicion = '3' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[3]} />
-	              <Carta id = {this.state.arregloAleatorio[4]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[4]]} idPosicion = '4' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[4]} />
-	              <Carta id = {this.state.arregloAleatorio[5]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[5]]} idPosicion = '5' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[5]} />
-	              <Carta id = {this.state.arregloAleatorio[6]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[6]]} idPosicion = '6' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[6]} />
-	              <Carta id = {this.state.arregloAleatorio[7]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[7]]} idPosicion = '7' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[7]} />
-	              <Carta id = {this.state.arregloAleatorio[8]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[8]]} idPosicion = '8' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[8]} />
-	              <Carta id = {this.state.arregloAleatorio[9]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[9]]} idPosicion = '9' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[9]} />
-	              <Carta id = {this.state.arregloAleatorio[10]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[10]]} idPosicion = '10' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[10]} />
-	              <Carta id = {this.state.arregloAleatorio[11]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[11]]} idPosicion = '11' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[11]} />
-	              <Carta id = {this.state.arregloAleatorio[12]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[12]]} idPosicion = '12' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[12]} />
-	              <Carta id = {this.state.arregloAleatorio[13]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[13]]} idPosicion = '13' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[13]} />
-	              <Carta id = {this.state.arregloAleatorio[14]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[14]]} idPosicion = '14' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[14]} />
-	              <Carta id = {this.state.arregloAleatorio[15]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[15]]} idPosicion = '15' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[15]} />
-	            </div>
-       	  	</div>
-            <div style={flex}>
-
-            </div>
+              <div style={flex}>
+                <div style={grid}>
+                  <Carta id = {this.state.arregloAleatorio[0]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[0]]} idPosicion = '0' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[0]} />
+                  <Carta id = {this.state.arregloAleatorio[1]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[1]]} idPosicion = '1' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[1]} />
+                  <Carta id = {this.state.arregloAleatorio[2]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[2]]} idPosicion = '2' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[2]} />
+                  <Carta id = {this.state.arregloAleatorio[3]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[3]]} idPosicion = '3' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[3]} />
+                  <Carta id = {this.state.arregloAleatorio[4]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[4]]} idPosicion = '4' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[4]} />
+                  <Carta id = {this.state.arregloAleatorio[5]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[5]]} idPosicion = '5' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[5]} />
+                  <Carta id = {this.state.arregloAleatorio[6]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[6]]} idPosicion = '6' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[6]} />
+                  <Carta id = {this.state.arregloAleatorio[7]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[7]]} idPosicion = '7' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[7]} />
+                  <Carta id = {this.state.arregloAleatorio[8]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[8]]} idPosicion = '8' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[8]} />
+                  <Carta id = {this.state.arregloAleatorio[9]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[9]]} idPosicion = '9' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[9]} />
+                  <Carta id = {this.state.arregloAleatorio[10]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[10]]} idPosicion = '10' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[10]} />
+                  <Carta id = {this.state.arregloAleatorio[11]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[11]]} idPosicion = '11' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[11]} />
+                  <Carta id = {this.state.arregloAleatorio[12]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[12]]} idPosicion = '12' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[12]} />
+                  <Carta id = {this.state.arregloAleatorio[13]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[13]]} idPosicion = '13' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[13]} />
+                  <Carta id = {this.state.arregloAleatorio[14]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[14]]} idPosicion = '14' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[14]} />
+                  <Carta id = {this.state.arregloAleatorio[15]}  imagen = {this.state.arregloImagenes[this.state.arregloAleatorio[15]]} idPosicion = '15' handle ={this.handleCardClick.bind(this)} volteo={this.state.volteamiento[15]} />
+                </div>
+              </div>
+              <div style={flex}>
+                <Counter contador = {this.state.counter} />
+              </div>
             </div>
           )
         }   
