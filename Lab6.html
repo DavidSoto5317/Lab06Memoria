@@ -26,15 +26,15 @@
         
         handleClick() {
           if(elegidas.length < 2 && this.props.idPosicion != validacion){
+            console.log("Entre")
             validacion = this.props.idPosicion
             this.setState({
               imagenFondo: this.props.imagen
             })
 
             elegidas.push(this.props.id)
-            setTimeout(() => {
             //console.log("Espero")
-            if(elegidas.length < 2){
+            if(elegidas.length != 2){
 
             }
             else{
@@ -46,24 +46,13 @@
                   alert("Felicidades - Has Ganado")
                 }
               }
-              elegidas = []
-              //console.log(elegidas)
-              //console.log(correctas)
-              if(!correctas.includes(this.props.id)){
+              setTimeout(() => {
+                if(!correctas.includes(this.props.id)){
                 this.setState({
                 imagenFondo: "atras"
                 })
-              }
+              }},1000)
             }
-            if(!correctas.includes(this.props.id)){
-              this.setState({
-                imagenFondo: "atras"
-                
-              })
-              validacion = null
-              elegidas.pop()
-            }
-            }, 1000)  
           }
         }
 
@@ -143,9 +132,9 @@
 	              <Carta id = {arregloAleatorio[15]}  imagen = {arregloImagenes[arregloAleatorio[15]]} idPosicion = '15' />
 	            </div>
        	  	</div>
-             <div style={flex}>
+            <div style={flex}>
 
-             </div>
+            </div>
             </div>
           )
         }   
